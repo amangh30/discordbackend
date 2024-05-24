@@ -31,7 +31,12 @@ const app = express();
 
 app.use(express.json());
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://discordclonefrontend.vercel.app', // Replace with your client's domain
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+  credentials: true, // Allow cookies and credentials if needed
+}));
 app.use(helmet());
 app.use(xss());
 app.use(mongoSanitize());
