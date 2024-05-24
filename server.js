@@ -11,6 +11,12 @@ require("dotenv").config();
 const helmet = require("helmet");
 const xss = require("xss-clean");
 const mongoSanitize = require("express-mongo-sanitize");
+const corsOptions = {
+  origin: 'https://discordclonefrontend.vercel.app',
+  methods: 'GET,POST,PUT,DELETE,OPTIONS',
+  allowedHeaders: 'Content-Type, Authorization',
+  credentials: true,
+};
 
 //Database Connection
 const connectDB = require("./db/connection");
@@ -29,14 +35,8 @@ const port = process.env.PORT || process.env.API_PORT || 5000;
 
 const app = express();
 
+app.use(cors(corsOptions));
 app.use(express.json());
-
-app.use(cors({
-  origin: 'https://discordclonefrontend.vercel.app', // Replace with your client's domain
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
-  allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
-  credentials: true, // Allow cookies and credentials if needed
-}));
 app.use(helmet());
 app.use(xss());
 app.use(mongoSanitize());
@@ -60,3 +60,5 @@ const start = async () => {
 };
 
 start();
+server.setTimeout(120000); // 2 minutes
+
